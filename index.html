@@ -152,6 +152,130 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Nacos避坑指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>title：配置Nacos注册中心</p>
+<h1 id="使用Nacos时遇到的坑"><a href="#使用Nacos时遇到的坑" class="headerlink" title="使用Nacos时遇到的坑"></a>使用Nacos时遇到的坑</h1><h2 id="1-前言："><a href="#1-前言：" class="headerlink" title="1.前言："></a>1.前言：</h2><p>最近在做一个练手的商城项目过程中要使用到spring-cloud-aibaba中的nacos作为微服务的注册中心，由于是第一次使用nacos，所以还是遇到了不少的坑，所以就记录一下在使用nacos过程中需要注意的事项。</p>
+<h2 id="2-Nacos的配置："><a href="#2-Nacos的配置：" class="headerlink" title="2.Nacos的配置："></a>2.Nacos的配置：</h2><h3 id="1-导入spring-cloud-aibaba依赖："><a href="#1-导入spring-cloud-aibaba依赖：" class="headerlink" title="1.导入spring-cloud-aibaba依赖："></a>1.导入spring-cloud-aibaba依赖：</h3><ol>
+<li><p><strong>pom.xml文件中导入spring-cloud-alibaba依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">version</span>&gt;</span>&#123;project-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2. **注意：使用spring- cloud时，对spring-boot的版本有要求，建议参考官网说明进行版本选择**</span><br><span class="line"></span><br><span class="line">![cloud和boot版本对应表](/Users/xiaomenggege/devDocs/typora-pic/nacos/cloud和boot版本对应表.png)</span><br><span class="line"></span><br><span class="line">### 2.进行nacos作为注册中心的配置：</span><br><span class="line"></span><br><span class="line">1. 引入 Nacos Discovery Starter</span><br><span class="line"></span><br><span class="line">   ```xml</span><br><span class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.3.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>![截屏2022-08-06 12.27.29](/Users/xiaomenggege/Desktop/截屏2022-08-06 12.27.29.png)</p>
+<ul>
+<li><strong><u>注意：这一步有坑，这一块如果没有配置版本信息，后面你的微服务时无法启动的：</u></strong></li>
+</ul>
+<ul>
+<li>虽然官网并未配置版本，但你一定要进行配置，**<u>具体的版本号要和你使用的nacos server版本号保持一致</u>**，否则就会出现让你头皮发麻的exception：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: com.alibaba.nacos.api.exception.NacosException: Client not connected,current status:STARTING</span><br></pre></td></tr></table></figure>
+
+<p>这个异常折磨了博主整整两天，我试遍了网上所有的解决方法，都没有用，几近崩溃之时，突然拨云见日，重现光明！</p>
+</li>
+<li><p>启动 Nacos Server：</p>
+<ul>
+<li><p>下载Nacos Server：</p>
+<ul>
+<li>方式一：官网直接下载：<a target="_blank" rel="noopener" href="https://github.com/alibaba/nacos/releases">https://github.com/alibaba/nacos/releases</a></li>
+<li>方式二：使用docker下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44519484/article/details/122844125?spm=1001.2101.3001.6650.1&amp;amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1-122844125-blog-123497719.pc_relevant_multi_platform_whitelistv1_exp2&amp;amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1-122844125-blog-123497719.pc_relevant_multi_platform_whitelistv1_exp2&amp;amp;utm_relevant_index=1#_1">Docker安装Nacos服务</a></li>
+</ul>
+</li>
+<li><p>启动：</p>
+<ul>
+<li><p>本地安装的：双击startup.cmd启动</p>
+</li>
+<li><p>Liunx云服务器安装的：自动启动</p>
+<p>![截屏2022-08-06 13.25.55](/Users/xiaomenggege/Desktop/截屏2022-08-06 13.25.55.png)</p>
+</li>
+<li><p>查看nacos运行日志：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f mynacos</span><br></pre></td></tr></table></figure>
+
+<p>![截屏2022-08-06 13.31.32](/Users/xiaomenggege/Desktop/截屏2022-08-06 13.31.32.png)</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-Nacos的使用："><a href="#3-Nacos的使用：" class="headerlink" title="3.Nacos的使用："></a>3.Nacos的使用：</h2><ol>
+<li><p>在应用的 /src/main/resources/application.properties 配置文件中配置 Nacos Server 地址</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意这里的地址配置的是Nacos Server地址，如果Nacos Server安装在本地就是127.0.0.1，如果安装在云服务器，就是云服务器的地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在应用的 /src/main/resources/application.properties 配置文件中配置 微服务的名称：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">gmall-product</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用 @EnableDiscoveryClient 注解开启服务注册与发现功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GmallProductApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        SpringApplication.run(GulimallProductApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>访问nacos系统管理微服务：</p>
+<ul>
+<li><p>启动微服务，访问nacos server地址管理微服务：</p>
+<p><strong>127.0.0.1:8848/nacos（如果安装在云服务器，就是云服务器的地址）</strong></p>
+</li>
+<li><p>登录名/密码：nacos</p>
+</li>
+<li><p>图形化界面：</p>
+<p>![截屏2022-08-06 13.46.43](/Users/xiaomenggege/Desktop/截屏2022-08-06 13.46.43.png)</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-避坑："><a href="#4-避坑：" class="headerlink" title="4.避坑："></a>4.避坑：</h2><p>如果下载的Nacos Server是2.0及之后的版本，那么当你启动微服务的时候，大概率会遇到如下异常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">com.alibaba.nacos.api.exception.NacosException: Request nacos server failed: </span><br><span class="line">	at com.alibaba.nacos.client.naming.remote.gprc.NamingGrpcClientProxy.requestToServer(NamingGrpcClientProxy.java:288) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.remote.gprc.NamingGrpcClientProxy.doUnsubscribe(NamingGrpcClientProxy.java:259) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.remote.gprc.NamingGrpcClientProxy.unsubscribe(NamingGrpcClientProxy.java:240) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate.unsubscribe(NamingClientProxyDelegate.java:157) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.NacosNamingService.unsubscribe(NacosNamingService.java:417) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.cloud.nacos.discovery.NacosWatch.stop(NacosWatch.java:177) [spring-cloud-starter-alibaba-nacos-discovery-2.2.8.RELEASE.jar:2.2.8.RELEASE]</span><br><span class="line">	at com.alibaba.cloud.nacos.discovery.NacosWatch.destroy(NacosWatch.java:207) [spring-cloud-starter-alibaba-nacos-discovery-2.2.8.RELEASE.jar:2.2.8.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564) [spring-context-5.2.12.RELEASE.jar:5.2.12.RELEASE]</span><br><span class="line">	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:750) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:405) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1237) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226) [spring-boot-2.3.7.RELEASE.jar:2.3.7.RELEASE]</span><br><span class="line">	at com.atguigu.gulimall.coupon.GulimallCouponApplication.main(GulimallCouponApplication.java:17) [classes/:na]</span><br><span class="line">Caused by: com.alibaba.nacos.api.exception.NacosException: Client not connected, current status:STARTING</span><br><span class="line">	at com.alibaba.nacos.common.remote.client.RpcClient.request(RpcClient.java:651) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.common.remote.client.RpcClient.request(RpcClient.java:631) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.remote.gprc.NamingGrpcClientProxy.requestToServer(NamingGrpcClientProxy.java:278) ~[nacos-client-2.1.0.jar:na]</span><br><span class="line">	... 22 common frames omitted</span><br></pre></td></tr></table></figure>
+
+<p>别着急，不要慌！！！！！！</p>
+<p>首先确定你的Nacos Server版本和Nacos Client版本（在控制台输出的日志中就能看到）</p>
+<p>![截屏2022-08-06 14.01.19](/Users/xiaomenggege/Desktop/截屏2022-08-06 14.01.19.png)</p>
+<p><strong>这里是client是：2.1.0</strong></p>
+<p>![截屏2022-08-06 14.03.42](/Users/xiaomenggege/Desktop/截屏2022-08-06 14.03.42.png)</p>
+<p><strong>而 server是：2.0.3</strong></p>
+<p>只需要去<a target="_blank" rel="noopener" href="https://mvnrepository.com/">mvn仓库</a>中找到server版本对应的依赖版本重新引入依赖即可</p>
+<p>![image-20220806140927580](/Users/xiaomenggege/Library/Application Support/typora-user-images/image-20220806140927580.png)</p>
+<h2 id="5-附录"><a href="#5-附录" class="headerlink" title="5.附录"></a>5.附录</h2><blockquote>
+<p>spring-cloud-alibaba官方git地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/spring-cloud-alibaba">https://github.com/alibaba/spring-cloud-alibaba</a></p>
+<p>spring-cloud-alibaba官方中文文档地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md">https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md</a></p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/06/Nacos%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-我的第一篇博客文章" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
