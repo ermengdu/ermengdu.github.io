@@ -5,12 +5,12 @@
   
 
   
-  <title>Hexo</title>
+  <title>基于腾讯云COS搭建Typora指南 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Mac电脑使用腾讯云COS + Picgo 搭建Typora图床一、购买腾讯云对象存储（COS）资源包官网地址：https:&#x2F;&#x2F;buy.cloud.tencent.com&#x2F;cos  购买【存储容量】- 强制购买   存储容量包很便宜，10GB&#x2F;1年 不到10块钱  购买【流量】- 强制购买  购买流量是非常重要的，如果不购买流量包，后期使用图床会出现大量费用。  为什么要买流量包？ 因为我们讲Ty">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2024/04/14/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/index.html">
+<meta property="og:title" content="基于腾讯云COS搭建Typora指南">
+<meta property="og:url" content="http://example.com/2024/04/15/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Mac电脑使用腾讯云COS + Picgo 搭建Typora图床一、购买腾讯云对象存储（COS）资源包官网地址：https:&#x2F;&#x2F;buy.cloud.tencent.com&#x2F;cos  购买【存储容量】- 强制购买   存储容量包很便宜，10GB&#x2F;1年 不到10块钱  购买【流量】- 强制购买  购买流量是非常重要的，如果不购买流量包，后期使用图床会出现大量费用。  为什么要买流量包？ 因为我们讲Ty">
 <meta property="og:locale" content="en_US">
@@ -31,9 +31,10 @@
 <meta property="og:image" content="https://typorabucket-1314305327.cos.ap-guangzhou.myqcloud.com/blog/202404142134212.png">
 <meta property="og:image" content="https://typorabucket-1314305327.cos.ap-guangzhou.myqcloud.com/blog/202404142136091.png">
 <meta property="og:image" content="https://typorabucket-1314305327.cos.ap-guangzhou.myqcloud.com/blog/202404142139122.png">
-<meta property="article:published_time" content="2024-04-14T12:15:09.767Z">
-<meta property="article:modified_time" content="2024-04-14T19:30:02.038Z">
+<meta property="article:published_time" content="2024-04-14T20:01:05.000Z">
+<meta property="article:modified_time" content="2024-04-14T20:02:05.798Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="服务器">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://typorabucket-1314305327.cos.ap-guangzhou.myqcloud.com/blog/202404142031724.png">
   
@@ -86,13 +87,23 @@
       <div class="outer">
         <section id="main"><article id="post-使用腾讯云COS + Picgo 搭建Typora图床" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2024/04/14/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/" class="article-date">
-  <time datetime="2024-04-14T12:15:09.767Z" itemprop="datePublished">2024-04-14</time>
+    <a href="/2024/04/15/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/" class="article-date">
+  <time datetime="2024-04-14T20:01:05.000Z" itemprop="datePublished">2024-04-15</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于腾讯云COS搭建Typora指南
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -170,24 +181,22 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/14/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/" data-id="cluzxw9p80001cxe219b7bonu" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2024/04/15/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/" data-id="cluzyefxj0001mxe22s3hhwva" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag">服务器</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2024/04/15/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Hello World
-        
-      </div>
-    </a>
   
+    <a href="/2024/04/15/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">我的第一篇博客文章</div>
+    </a>
   
 </nav>
 
@@ -202,9 +211,23 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag">服务器</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="font-size: 10px;">服务器</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -223,15 +246,15 @@
       <ul>
         
           <li>
+            <a href="/2024/04/15/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/">基于腾讯云COS搭建Typora指南</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/15/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">我的第一篇博客文章</a>
           </li>
         
           <li>
             <a href="/2024/04/15/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/14/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%20+%20Picgo%20%E6%90%AD%E5%BB%BATypora%E5%9B%BE%E5%BA%8A/">(no title)</a>
           </li>
         
       </ul>
